@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auth</artifactId>
+    <artifactId>commons-auth</artifactId>
     <packaging>jar</packaging>
 
     <name>Robusta Inc Commons - Authentication and Authorization</name>
