@@ -11,6 +11,7 @@
         <module>commons-auth</module>
         <module>commons-persistence</module>
         <module>commons-test</module>
+        <module>commons-mvc</module>
     </modules>
     <name>Robusta Inc - Commons Root</name>
     <packaging>pom</packaging>
@@ -195,6 +196,11 @@
                 <artifactId>spring-test</artifactId>
                 <version>${org.springframework.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${org.springframework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
