@@ -12,6 +12,7 @@
         <module>commons-persistence</module>
         <module>commons-test</module>
         <module>commons-mvc</module>
+        <module>commons-util</module>
     </modules>
     <name>Robusta Inc - Commons Root</name>
     <packaging>pom</packaging>

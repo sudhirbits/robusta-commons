@@ -8,34 +8,31 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.robusta.commons</groupId>
-    <artifactId>commons-domain</artifactId>
-    <name>Robusta Inc Commons - Domain</name>
-    <description>Commons Domain Model</description>
+    <artifactId>commons-util</artifactId>
+    <name>Robusta Inc Commons - Utilities</name>
+    <description>Reusable utilities and helpers</description>
     <dependencies>
         <dependency>
-            <groupId>com.robusta.commons</groupId>
-            <artifactId>commons-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock-junit4</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 </project>
