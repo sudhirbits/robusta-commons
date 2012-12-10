@@ -19,6 +19,11 @@
     <description>
         Utilities and tools to add robustness into enterprise java.
     </description>
+    <scm>
+        <connection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</connection>
+        <developerConnection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <developers>
         <developer>
             <id>sudhirbits</id>
