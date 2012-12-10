@@ -271,8 +271,8 @@
     <distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>cloudbees-repository</id>
-            <name>Cloudbees Release Repository</name>
+            <id>robusta-release-repository</id>
+            <name>Robusta Release Repository</name>
             <url>dav:https://repository-robusta-inc.forge.cloudbees.com/release</url>
             <layout>default</layout>
         </repository>
