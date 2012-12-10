@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.robusta.commons</groupId>
     <artifactId>robusta-app-commons</artifactId>
-    <version>1.2</version>
+    <version>1.3-SNAPSHOT</version>
     <modules>
         <module>commons-domain</module>
         <module>commons-auth</module>
@@ -18,8 +18,8 @@
         Utilities and tools to add robustness into enterprise java.
     </description>
     <scm>
-        <connection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/tags/robusta-app-commons-1.2</connection>
-        <developerConnection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/tags/robusta-app-commons-1.2</developerConnection>
+        <connection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</connection>
+        <developerConnection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</developerConnection>
     </scm>
     <developers>
         <developer>
