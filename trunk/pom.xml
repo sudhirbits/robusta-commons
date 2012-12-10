@@ -260,5 +260,21 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>1.0-beta-7</version>
+            </extension>
+        </extensions>
     </build>
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>cloudbees-repository</id>
+            <name>Cloudbees Release Repository</name>
+            <url>dav:https://repository-robusta-inc.forge.cloudbees.com/release</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
 </project>
