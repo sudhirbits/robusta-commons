@@ -18,5 +18,6 @@ public class Constants {
     static final String ORDER_BY = "ORDER BY";
     static final String GROUP_BY = "GROUP BY";
     static final String WHERE = "WHERE";
-    public static final String EXISTS = "EXISTS";
+    static final String EXISTS = "EXISTS";
+    static final String LIMIT = "LIMIT";
 }

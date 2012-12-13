@@ -1,9 +1,10 @@
 package com.robusta.commons.sql.dsl;
 
-import com.google.common.collect.Iterables;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Iterables.skip;
+import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.robusta.commons.sql.dsl.Constants.*;
 
@@ -43,9 +44,13 @@ public abstract class Criterion {
         return or(newArrayList(criterions));
     }
 
-    public static Criterion or(Iterable<Criterion> criterions) {
-        checkArgument(Iterables.size(criterions) >= 2);
-        return or(getFirst(criterions, null), toArray(skip(criterions, 1), Criterion.class));
+    public static Criterion or(List<Criterion> criterions) {
+        checkArgument(criterions != null);
+        checkArgument(criterions.size() >= 1);
+        if(criterions.size() == 1) {
+            return criterions.get(0);
+        }
+        return or(criterions.get(0), toArray(skip(criterions, 1), Criterion.class));
     }
 
 

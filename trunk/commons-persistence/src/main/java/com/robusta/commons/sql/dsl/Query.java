@@ -16,6 +16,7 @@ public class Query {
     private List<Field> groupBies = new ArrayList<Field>();
     private List<Order> orders = new ArrayList<Order>();
     private List<Criterion> havings = new ArrayList<Criterion>();
+    private Restriction restriction;
 
     private Query(Field... fields) {
         this.fields.addAll(asList(fields));
@@ -81,7 +82,16 @@ public class Query {
         visitWhereClause(sql);
         visitGroupByClause(sql);
         visitOrderByClause(sql);
+        visitRestrictionClause(sql);
         return sql.toString().trim();
+    }
+
+    private void visitRestrictionClause(StringBuilder sql) {
+        if (restriction == null) {
+            return;
+        }
+        sql.append(LIMIT);
+        sql.append(SPACE).append(restriction).append(SPACE);
     }
 
     private void visitOrderByClause(StringBuilder sql) {
@@ -152,6 +162,11 @@ public class Query {
 
     public Query having(Criterion criterion) {
         this.havings.add(criterion);
+        return this;
+    }
+
+    public Query restrict(int limit, int offset) {
+        this.restriction = new Restriction(limit, offset);
         return this;
     }
 }

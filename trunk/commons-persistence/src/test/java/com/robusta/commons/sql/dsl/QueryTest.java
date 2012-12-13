@@ -47,6 +47,12 @@ public class QueryTest {
     }
 
     @Test
+    public void should_add_limit_clause_to_sql() {
+        Query query = select(field("s")).from(table("d")).restrict(100, 50);
+        assertThat(query.toString(), equalTo("SELECT s FROM d LIMIT 50,100"));
+    }
+
+    @Test
     public void should_append_inner_join_clause_after_from_clause() {
         Query query = select(field("d")).from(table("table1"));
         query.join(inner(table("table2"), table("table1").field("id").eq(table("table2").field("id"))));
@@ -112,13 +118,14 @@ public class QueryTest {
         Query query = select(tId).from(t).join(inner(t1, tId.eq(t1Id)))
                 .where(and(tId.eq("'a'"), t1Time.between("'1900'", "'2000'")))
                 .groupBy(tId).having(tId.gt("1"))
-                .orderBy(asc(tId));
+                .orderBy(asc(tId))
+                .restrict(50, 2000);
         assertThat(query.toString(), equalTo("SELECT t.id "
                 + "FROM table AS t "
                 + "INNER JOIN table1 AS t1 ON (t.id=t1.id) "
                 + "WHERE ((t.id='a') AND (t1.time BETWEEN '1900' AND '2000')) "
                 + "GROUP BY t.id HAVING (t.id>1) "
-                + "ORDER BY t.id ASC"));
+                + "ORDER BY t.id ASC LIMIT 2000,50"));
     }
 
     @Test
