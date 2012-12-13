@@ -32,6 +32,11 @@ public class CriterionTest {
     }
 
     @Test
+    public void should_generate_constraint_by_partial_criterions_and_logic_operator2() {
+        assertThat(or(field("d").eq("'d'")).toString(), equalTo("(d='d')"));
+    }
+
+    @Test
     public void should_create_exists_criterion(){
         assertThat(exists(select().from(table("table"))).toString(), equalTo("(EXISTS (SELECT * FROM table))"));
     }
