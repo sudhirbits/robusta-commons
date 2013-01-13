@@ -17,7 +17,7 @@ public abstract class UserContextHolder {
         return getCurrentUser().identifier();
     }
 
-    private static User getCurrentUser() {
+    public static User getCurrentUser() {
         User user = currentUser.get();
         if(user == null) {
             throw new RuntimeException("User is not available in context");
