@@ -11,6 +11,7 @@
         <module>commons-test</module>
         <module>commons-mvc</module>
         <module>commons-util</module>
+        <module>commons-async</module>
     </modules>
     <name>Robusta Inc - Commons Root</name>
     <packaging>pom</packaging>
@@ -81,6 +82,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>1.4.3</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
