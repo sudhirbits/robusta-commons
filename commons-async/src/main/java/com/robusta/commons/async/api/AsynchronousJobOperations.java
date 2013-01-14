@@ -6,14 +6,4 @@ public interface AsynchronousJobOperations<Parameters, Results> {
     void markComplete(Long jobId, Results results);
     void markFailure(Long jobId, Throwable failure);
     Parameters parametersOfJob(Long jobId);
-    Results resultsOfJob(Long jobId);
-
-//    interface AsynchronousJob {
-//        public Long jobId();
-//        public JobType jobType();
-//        public JobStatus jobStatus();
-//        public String parameters();
-//        public String results();
-//        public String failures();
-//    }
 }

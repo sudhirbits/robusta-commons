@@ -1,11 +1,11 @@
 package com.robusta.commons.async.test;
 
 import com.robusta.commons.async.api.JobType;
-import com.robusta.commons.async.defaults.jobops.NoOpAsynchronousJobOperations;
+import com.robusta.commons.async.defaults.jobops.DefaultInMemoryAsynchronousJobOperations;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyCustomAsyncJobOperations<Parameters, Results> extends NoOpAsynchronousJobOperations<Parameters, Results> {
+public class MyCustomAsyncJobOperations<Parameters, Results> extends DefaultInMemoryAsynchronousJobOperations<Parameters, Results> {
     private JobExecutionListener<Parameters, Results> listener;
 
     public void setListener(JobExecutionListener<Parameters, Results> listener) {
