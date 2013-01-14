@@ -1,5 +1,7 @@
 package com.robusta.commons.sql.dsl;
 
+import com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,16 @@ public class Query {
         this.fields.addAll(asList(fields));
     }
 
+    private Query(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    public Query(Table table,List<Field> fields){
+        this.table = table;
+        this.fields = fields;
+    }
+
+
     public Query and(Criterion criterion) {
         if(criterion != null) {
             where(Criterion.and(this.criterion, criterion));
@@ -30,6 +42,10 @@ public class Query {
     }
 
     public static Query select(Field... fields) {
+        return new Query(fields);
+    }
+
+    public static Query select(List<Field> fields) {
         return new Query(fields);
     }
 
@@ -83,6 +99,13 @@ public class Query {
         visitGroupByClause(sql);
         visitOrderByClause(sql);
         visitRestrictionClause(sql);
+        return sql.toString().trim();
+    }
+
+    public String insertStatement() {
+        StringBuilder sql = new StringBuilder();
+        visitInsertClause(sql);
+        visitValuesClause(sql);
         return sql.toString().trim();
     }
 
@@ -154,6 +177,19 @@ public class Query {
             sql.append(field).append(COMMA);
         }
         sql.deleteCharAt(sql.length() - 1).append(SPACE);
+    }
+
+    private void visitInsertClause(StringBuilder sql) {
+        sql.append(INSERT).append(SPACE).append(table).append(SPACE).append(LEFT_PARENTHESIS);
+        sql.append(Joiner.on(COMMA).join(fields)).append(RIGHT_PARENTHESIS).append(SPACE);
+    }
+
+    private void visitValuesClause(StringBuilder sql) {
+        sql.append(VALUES).append(SPACE).append(LEFT_PARENTHESIS);
+        for (Field field : fields) {
+            sql.append(PLACEHOLDER).append(COMMA);
+        }
+        sql.deleteCharAt(sql.length() - 1).append(RIGHT_PARENTHESIS);
     }
 
     public Table as(String alias) {
