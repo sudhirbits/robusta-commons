@@ -20,4 +20,7 @@ public class Constants {
     static final String WHERE = "WHERE";
     static final String EXISTS = "EXISTS";
     static final String LIMIT = "LIMIT";
+    static final String INSERT = "INSERT INTO";
+    static final String VALUES = "VALUES";
+    static final String PLACEHOLDER = "?";
 }

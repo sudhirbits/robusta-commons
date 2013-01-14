@@ -2,6 +2,7 @@ package com.robusta.commons.sql.dsl;
 
 import org.junit.Test;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.robusta.commons.sql.dsl.Criterion.and;
 import static com.robusta.commons.sql.dsl.Field.field;
 import static com.robusta.commons.sql.dsl.Join.*;
@@ -10,6 +11,7 @@ import static com.robusta.commons.sql.dsl.Order.desc;
 import static com.robusta.commons.sql.dsl.Query.select;
 import static com.robusta.commons.sql.dsl.Table.table;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class QueryTest {
@@ -156,5 +158,15 @@ public class QueryTest {
     @Test
     public void test_where_clause_with_a_post_and() throws Exception {
         assertThat(select().from(table("table")).where(and(field("d").eq("a"), field("c").eq("b"))).toString(), equalTo("SELECT * FROM table WHERE ((d=a) AND (c=b))"));
+    }
+
+    @Test
+    public void should_return_correct_insert_statement() {
+        Table table = table("table");
+        Field field1 = Field.field("field1");
+        Field field2 = Field.field("field2");
+        Query query = new Query(table,newArrayList(field1,field2));
+
+        assertThat(query.insertStatement(),is("INSERT INTO table (field1,field2) VALUES (?,?)"));
     }
 }
