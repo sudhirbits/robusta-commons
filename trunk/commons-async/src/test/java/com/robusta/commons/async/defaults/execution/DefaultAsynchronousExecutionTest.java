@@ -73,7 +73,7 @@ public class DefaultAsynchronousExecutionTest {
 
     @Test
     public void testPerformAsynchronously_performerFailsWithException() throws Exception {
-        final AsynchronousActivity.PerformanceException exception = new AsynchronousActivity.PerformanceException();
+        final AsynchronousActivity.PerformanceException exception = new AsynchronousActivity.PerformanceException("test");
         mockery.checking(new Expectations() {{
             oneOf(jobOperations).start(jobId);
             oneOf(jobOperations).parametersOfJob(jobId); will(returnValue(parameters));

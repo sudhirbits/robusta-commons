@@ -80,5 +80,6 @@ public class AysncOperationsTest {
             System.out.println("completedJobs.size() = " + completedJobs.size());
             Thread.sleep(1000);
         }
+        System.out.println("jobOperations = " + jobOperations);
     }
 }
