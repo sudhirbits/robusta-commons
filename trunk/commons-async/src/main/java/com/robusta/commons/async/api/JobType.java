@@ -22,4 +22,9 @@ public class JobType {
         checkArgument(maxLength > 10, "Max Job Type Length of less than 10 characters is unsupported");
         JOB_TYPE_MAX_LENGTH = maxLength;
     }
+
+    @Override
+    public String toString() {
+        return jobTypeAsString;
+    }
 }

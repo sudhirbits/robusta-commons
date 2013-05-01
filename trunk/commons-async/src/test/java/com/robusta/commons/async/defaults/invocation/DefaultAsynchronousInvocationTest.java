@@ -1,9 +1,6 @@
 package com.robusta.commons.async.defaults.invocation;
 
-import com.robusta.commons.async.api.AsynchronousExecution;
-import com.robusta.commons.async.api.AsynchronousInvocation;
-import com.robusta.commons.async.api.AsynchronousJobOperations;
-import com.robusta.commons.async.api.JobType;
+import com.robusta.commons.async.api.*;
 import com.robusta.commons.async.test.TestOperation;
 import com.robusta.commons.domain.user.User;
 import com.robusta.commons.test.mock.Mock;
@@ -43,6 +40,12 @@ public class DefaultAsynchronousInvocationTest {
         context = AsynchronousInvocation.AsynchronousContext.anAsynchronousContextWith(user, parameters);
         jobType = JobType.with("TEST");
         jobId = -1L;
+        JobContextHolder.setCurrentJob(new AsynchronousJob() {
+            @Override
+            public Long jobId() {
+                return -1L;
+            }
+        });
     }
 
     @Test
@@ -50,7 +53,7 @@ public class DefaultAsynchronousInvocationTest {
         mockery.checking(new Expectations() {{
             oneOf(asynchronousExecution).jobType(); will(returnValue(jobType));
             oneOf(asynchronousExecution).performAsynchronously(user, jobId);
-            oneOf(jobOperations).create(jobType, parameters); will(returnValue(jobId));
+            oneOf(jobOperations).create(-1L, jobType, parameters); will(returnValue(jobId));
         }});
         asynchronousInvocation.invokeAsynchronouslyAndReturnHandle(context);
     }

@@ -1,9 +1,6 @@
 package com.robusta.commons.async.defaults.execution;
 
-import com.robusta.commons.async.api.AsynchronousActivity;
-import com.robusta.commons.async.api.AsynchronousExecution;
-import com.robusta.commons.async.api.AsynchronousJobOperations;
-import com.robusta.commons.async.api.JobType;
+import com.robusta.commons.async.api.*;
 import com.robusta.commons.context.UserContextHolder;
 import com.robusta.commons.domain.user.User;
 import org.slf4j.Logger;
@@ -42,6 +39,7 @@ class DefaultAsynchronousExecution<Activity extends AsynchronousActivity<Paramet
         checkArgument(user != null, "User is required for job operations");
         checkArgument(jobId != null, "Asynchronous job must be persisted and job id should be made available for this execution");
         UserContextHolder.setCurrentUser(user);
+        JobContextHolder.setCurrentJob(makeAJob(jobId));
         try {
             LOGGER.debug("Starting job with id: '{}'", jobId);
             jobOperations.start(jobId);
@@ -62,7 +60,17 @@ class DefaultAsynchronousExecution<Activity extends AsynchronousActivity<Paramet
             throw new RuntimeException(throwable);
         } finally {
             UserContextHolder.clear();
+            JobContextHolder.clear();
         }
+    }
+
+    private AsynchronousJob makeAJob(final Long jobId) {
+        return new AsynchronousJob() {
+            @Override
+            public Long jobId() {
+                return jobId;
+            }
+        };
     }
 
     @Override

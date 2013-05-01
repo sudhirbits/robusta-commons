@@ -1,7 +1,7 @@
 package com.robusta.commons.async.api;
 
 public interface AsynchronousJobOperations<Parameters, Results> {
-    Long create(JobType jobType, Parameters parameters);
+    Long create(Long parentJobId, JobType jobType, Parameters parameters);
     void start(Long jobId);
     void markComplete(Long jobId, Results results);
     void markFailure(Long jobId, Throwable failure);

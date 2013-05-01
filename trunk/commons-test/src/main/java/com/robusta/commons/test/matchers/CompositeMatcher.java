@@ -60,6 +60,7 @@ public class CompositeMatcher<T> extends TypeSafeMatcher<T> {
                 Method accessorMethod = findMethod(tClass, methodOrFieldName);
                 Object propertyValue;
                 if (accessorMethod != null) {
+                    accessorMethod.setAccessible(true);
                     propertyValue = invokeMethod(accessorMethod, t);
                 } else {
                     Field field = ReflectionUtils.findField(tClass, methodOrFieldName);

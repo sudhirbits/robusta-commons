@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.ClassUtils;
 
+import static com.robusta.commons.async.api.JobContextHolder.getCurrentJobId;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 import static org.springframework.aop.support.AopUtils.isAopProxy;
 import static org.springframework.util.ReflectionUtils.findMethod;
@@ -33,7 +34,7 @@ public class DefaultAsynchronousInvocation<Activity extends AsynchronousActivity
     @Override
     public Long invokeAsynchronouslyAndReturnHandle(AsynchronousContext<Parameters> context) {
         // Step 1 is to persist the job and get the job handle.
-        Long jobId = jobOperations.create(invokable.jobType(), context.parameters());
+        Long jobId = jobOperations.create(getCurrentJobId(), invokable.jobType(), context.parameters());
         LOGGER.debug("Created Async Job with id: '{}'", jobId);
 
         // Step 2 is the invoke the delegated service that is annotated with @Async.
