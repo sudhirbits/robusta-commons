@@ -13,8 +13,8 @@ public class MyCustomAsyncJobOperations<Parameters, Results> extends DefaultInMe
     }
 
     @Override
-    public Long create(JobType jobType, Parameters parameters) {
-        Long jobId = super.create(jobType, parameters);
+    public Long create(Long parentJobId, JobType jobType, Parameters parameters) {
+        Long jobId = super.create(parentJobId, jobType, parameters);
         listener.created(jobType, parameters);
         return jobId;
     }

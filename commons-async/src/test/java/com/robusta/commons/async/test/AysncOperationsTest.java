@@ -28,10 +28,6 @@ public class AysncOperationsTest {
     private AsynchronousInvocation<TestOperation, TestOperation.TestParameters, TestOperation.TestResults> invocation;
 
     @Autowired
-    @Qualifier("test2AsyncInvocation")
-    private AsynchronousInvocation<TestOperation2, TestOperation2.TestParameters2, TestOperation2.TestResults2> invocation2;
-
-    @Autowired
     private MyCustomAsyncJobOperations jobOperations;
     private List<Long> runningJobs = Collections.synchronizedList(Lists.<Long>newArrayList());
     private List<Long> failedJobs = Collections.synchronizedList(Lists.<Long>newArrayList());
@@ -72,14 +68,12 @@ public class AysncOperationsTest {
     public void testName() throws Exception {
         for(int i = 0; i < 1; i++) {
             invocation.invokeAsynchronouslyAndReturnHandle(anAsynchronousContextWith(DEFAULT, new TestOperation.TestParameters("one" + i, "two" + i)));
-            invocation2.invokeAsynchronouslyAndReturnHandle(anAsynchronousContextWith(DEFAULT, new TestOperation2.TestParameters2("three" + i, "four" + i)));
         }
-        Thread.sleep(1000);
         while(count.get() != 0) {
-            System.out.println("runningJobs.size() = " + runningJobs.size());
-            System.out.println("completedJobs.size() = " + completedJobs.size());
+            System.out.println("Job Execution Snapshot = " + jobOperations);
             Thread.sleep(1000);
         }
-        System.out.println("jobOperations = " + jobOperations);
+
+        System.out.println("Job Completion Snapshot = " + jobOperations);
     }
 }
