@@ -21,6 +21,22 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
 import static org.springframework.util.ReflectionUtils.*;
 
+/**
+ * An {@link CellValue} annotation driven spreadsheet builder.
+ *
+ * Bean class/ Domain interface with accessor methods annotated
+ * with {@link CellValue} are read into metadata.
+ *
+ * This metadata is used to populate header row and data rows
+ * into a spreadsheet from a list of the Bean class/ Domain
+ * interface implementation objects.
+ *
+ * <p>Metadata is reflectively read and cached during
+ * instantiation, subsequent instantations for the same
+ * bean/domain class reads from the metadata cache to
+ * save reflective annotation reader calls.</p>
+ * @param <Exportable>
+ */
 public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelBuilder<Exportable> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Class<Exportable> domainClass;
@@ -85,6 +101,18 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return metadataList;
     }
 
+    /**
+     * Allows building a {@link CellValueMetadata} from a bean class
+     * method annotated with {@link CellValue}
+     *
+     * <p>Protected to allow sub-classes to build
+     * {@link CellValueMetadata} or its sub-class in a custom manner.
+     * </p>
+     *
+     * @param method Method the annotated method
+     * @param annotation CellValue annotation
+     * @return CellValueMetadata
+     */
     protected CellValueMetadata newCellValueMetadata(Method method, CellValue annotation) {
         return new CellValueMetadata(annotation.position(), annotation.headerText(), annotation.visibility(), method);
     }
@@ -94,6 +122,9 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         logger.trace("Conforming method to requirements - 1. Takes no parameters. 2. Returns a String.");
     }
 
+    /**
+     * Meta information class for {@link CellValue}
+     */
     protected class CellValueMetadata implements Ordered {
         private final int position;
         private final String headerText;
@@ -149,23 +180,71 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         }
     }
 
-    private int rowStartIndex() {
+    /**
+     * Row index on the worksheet from which data rows start.
+     *
+     * <p>Default row start index is {@code 1}
+     * Implementations can override to provide a non-default
+     * row start index.</p>
+     *
+     * @return int data row index
+     */
+    protected int rowStartIndex() {
         return 1;
     }
 
+    /**
+     * Header row index on the worksheet.
+     *
+     * <p>Default header row index is {@code 0}
+     * Implementations can override to provide a non-default
+     * header row index.</p>
+     *
+     * @return int data row index
+     */
     protected int headerRowIndex() {
         return 0;
     }
 
+    /**
+     * Sheet level operations
+     *
+     * <ol>
+     *     <li>Column hiding based on metadata</li>
+     *     <li>Column resizing based on metadata</li>
+     * </ol>
+     *
+     * @param sheet HSSFSheet
+     * @param metadata CellValueMetadata
+     */
     protected void doWithSheetAndCellValueMetadata(HSSFSheet sheet, CellValueMetadata metadata) {
         sheet.setColumnHidden(metadata.position, !metadata.visibility);
         sheet.autoSizeColumn(metadata.position);
     }
 
+    /**
+     * Populate value into the workbook cell using the row exportable and
+     * cell value metadata
+     *
+     * @param metadata CellValueMetadata
+     * @param rowData Exportable row object
+     * @param rowCell HSSFCell Workbook row cell
+     */
     protected void setRowCellValue(CellValueMetadata metadata, Exportable rowData, HSSFCell rowCell) {
         rowCell.setCellValue(metadata.valueFrom(rowData));
     }
 
+    /**
+     * Invoked by
+     * {@link AnnotatedParsingExcelBuilder#generate(org.apache.poi.hssf.usermodel.HSSFWorkbook, java.util.List)}
+     *
+     * to build a new cell in the worksheet row using the
+     * supplied {@link CellValueMetadata}
+     *
+     * @param row HSSFRow
+     * @param metadata CellValueMetadata
+     * @return HSSFCell
+     */
     protected HSSFCell createRowCell(HSSFRow row, CellValueMetadata metadata) {
         return createRowCellAtLocationSpecifiedByMetadata(row, metadata);
     }
@@ -174,8 +253,14 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return row.createCell(metadata.position);
     }
 
-    protected void setHeaderCellValue(CellValueMetadata metadata1, HSSFCell cell) {
-        cell.setCellValue(metadata1.headerText);
+    /**
+     * Populate header value into the workbook cell using metadata.
+     *
+     * @param metadata CellValueMetadata
+     * @param cell HSSFCell
+     */
+    protected void setHeaderCellValue(CellValueMetadata metadata, HSSFCell cell) {
+        cell.setCellValue(metadata.headerText);
     }
 
     protected void styleHeaderCell(HSSFCellStyle headerStyle, HSSFCell cell) {
@@ -186,6 +271,13 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return createRowCellAtLocationSpecifiedByMetadata(header, metadata);
     }
 
+    /**
+     * Build header cell style information.
+     *
+     * @param hssfWorkbook HSSFWorkbook
+     * @param font HSSFFont
+     * @return HSSFCellStyle
+     */
     protected HSSFCellStyle headerStyle(HSSFWorkbook hssfWorkbook, HSSFFont font) {
         HSSFCellStyle headerStyle = hssfWorkbook.createCellStyle();
         headerStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
@@ -194,6 +286,13 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return headerStyle;
     }
 
+    /**
+     * Build header cell font to be used in
+     * {@link AnnotatedParsingExcelBuilder#headerStyle(org.apache.poi.hssf.usermodel.HSSFWorkbook, org.apache.poi.hssf.usermodel.HSSFFont)}
+     *
+     * @param hssfWorkbook HSSFWorkbook
+     * @return HSSFFont
+     */
     protected HSSFFont headerFont(HSSFWorkbook hssfWorkbook) {
         HSSFFont font = hssfWorkbook.createFont();
         font.setBoldweight((short) 700);
