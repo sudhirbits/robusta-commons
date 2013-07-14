@@ -299,6 +299,17 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return font;
     }
 
+    /**
+     * Invoked during generate to allow for sub-classes to
+     * override the default behavior and provide custom
+     * metadata for spreadsheet content generation.
+     *
+     * <p>Default behavior is to return the metadata
+     * with which the instance was instantiated.</p>
+     *
+     * @param exportables List of exportables
+     * @return List&lt;CellValueMetadata&gt;
+     */
     protected List<CellValueMetadata> deduceMetadataListToBeUsed(List<Exportable> exportables) {
         return masterMetadataList;
     }
@@ -307,5 +318,11 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         return domainClass;
     }
 
+    /**
+     * Implementations must provide a worksheet name for the
+     * sheet that is generated during the generate operation.
+     *
+     * @return String worksheet name
+     */
     protected abstract String sheetName();
 }
