@@ -7,7 +7,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.robusta.commons</groupId>
     <artifactId>commons-async</artifactId>
     <name>Robusta Inc Commons - Async Operations</name>
     <description>Async operations invocations and abstractions</description>
@@ -39,7 +38,7 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.3</version>
+            <version>${xstream.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
