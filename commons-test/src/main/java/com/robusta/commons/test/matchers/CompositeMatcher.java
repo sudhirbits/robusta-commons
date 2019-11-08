@@ -23,7 +23,7 @@ public class CompositeMatcher<T> extends TypeSafeMatcher<T> {
     @Override
     public boolean matchesSafely(T toBeMatched) {
         for (TypeSafeMatcher<T> matcher : matchers) {
-            if (!matcher.matchesSafely(toBeMatched)) {
+            if (!matcher.matches(toBeMatched)) {
                 System.out.println(String.format("matcher: '%s' returned false matching: '%s'", matcher, toBeMatched));
                 return false;
             }
