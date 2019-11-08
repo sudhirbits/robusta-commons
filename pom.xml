@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.robusta.commons</groupId>
     <artifactId>robusta-app-commons</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <modules>
         <module>commons-domain</module>
         <module>commons-auth</module>
@@ -20,8 +20,8 @@
         Utilities and tools to add robustness into enterprise java.
     </description>
     <scm>
-        <connection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</connection>
-        <developerConnection>scm:svn:https://svn-robusta-inc.forge.cloudbees.com/robusta-app-common/trunk</developerConnection>
+        <connection>git@github.com:sudhirbits/robusta-commons.git</connection>
+        <developerConnection>git@github.com:sudhirbits/robusta-commons.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -32,22 +32,29 @@
     </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>4.10</junit.version>
-        <poi.version>3.8</poi.version>
-        <guava.version>12.0</guava.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <junit.version>4.12</junit.version>
+        <poi.version>4.1.1</poi.version>
+        <guava.version>28.1-jre</guava.version>
         <jmock.version>2.5.1</jmock.version>
-        <hamcrest.version>1.1</hamcrest.version>
-        <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <org.springframework.version>5.0.3.RELEASE</org.springframework.version>
         <log4j.version>1.2.15</log4j.version>
         <slf4j.version>1.6.6</slf4j.version>
         <servlet.api.version>3.0.1</servlet.api.version>
-        <selenium.java.version>2.25.0</selenium.java.version>
         <mysql.connector.jdbc.version>5.1.21</mysql.connector.jdbc.version>
         <mockito.version>1.8.4</mockito.version>
         <com.h2database.h2.version>1.3.160</com.h2database.h2.version>
         <org.hibernate.version>4.1.4.Final</org.hibernate.version>
         <mysql.version>${mysql.connector.jdbc.version}</mysql.version>
         <env>dev</env>
+        <jaxb.version>2.3.1</jaxb.version>
+        <xstream.version>1.4.11.1</xstream.version>
+        <surefire-plugin.version>3.0.0-M3</surefire-plugin.version>
+        <jar-plugin.version>3.2.0</jar-plugin.version>
+        <compiler-plugin.version>3.8.1</compiler-plugin.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -87,7 +94,7 @@
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.3</version>
+                <version>${xstream.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -149,14 +156,9 @@
                 <version>${com.h2database.h2.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>${org.hibernate.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.0-api</artifactId>
-                <version>1.0.0.Final</version>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${javax.persistence-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -217,35 +219,19 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${org.springframework.version}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-java</artifactId>
-                <version>${selenium.java.version}</version>
-            </dependency>
-            <!-- Apache Commons Upload -->
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>1.2.2</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>1.3.2</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>${jar-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -257,7 +243,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.10</version>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*IntegrationTest.java</exclude>
@@ -267,21 +253,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <extensions>
-        <extension>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>1.0-beta-7</version>
-        </extension>
-    </extensions>
     </build>
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>robusta-release-repository</id>
-            <name>Robusta Release Repository</name>
-            <url>dav:https://repository-robusta-inc.forge.cloudbees.com/release</url>
-            <layout>default</layout>
-        </repository>
-    </distributionManagement>
 </project>
