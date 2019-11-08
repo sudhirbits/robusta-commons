@@ -5,6 +5,7 @@ import com.robusta.commons.export.api.ExcelBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.OrderComparator;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.Boolean.TRUE;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
 import static org.springframework.util.ReflectionUtils.*;
 
@@ -280,8 +282,8 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
      */
     protected HSSFCellStyle headerStyle(HSSFWorkbook hssfWorkbook, HSSFFont font) {
         HSSFCellStyle headerStyle = hssfWorkbook.createCellStyle();
-        headerStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
-        headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_YELLOW.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         headerStyle.setFont(font);
         return headerStyle;
     }
@@ -295,7 +297,7 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
      */
     protected HSSFFont headerFont(HSSFWorkbook hssfWorkbook) {
         HSSFFont font = hssfWorkbook.createFont();
-        font.setBoldweight((short) 700);
+        font.setBold(TRUE);
         return font;
     }
 
