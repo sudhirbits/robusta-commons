@@ -53,6 +53,7 @@
         <jaxb.version>2.3.1</jaxb.version>
         <xstream.version>1.4.11.1</xstream.version>
         <surefire-plugin.version>3.0.0-M3</surefire-plugin.version>
+        <jar-plugin.version>3.8.1</jar-plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -232,8 +233,13 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>${jar-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
