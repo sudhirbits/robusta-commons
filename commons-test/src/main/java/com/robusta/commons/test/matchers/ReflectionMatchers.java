@@ -1,17 +1,13 @@
 package com.robusta.commons.test.matchers;
 
-import com.google.common.base.Function;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.stream.Stream;
 
-import static com.google.common.collect.Iterables.toArray;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.*;
 import static org.springframework.util.ReflectionUtils.findMethod;
 import static org.springframework.util.ReflectionUtils.invokeMethod;
@@ -48,7 +44,7 @@ public class ReflectionMatchers {
      * @param <Verifiable> Object 1
      */
     public static <Reference, Verifiable> void assertObjectsEquivalent(Reference reference, Verifiable verifiable, String... equivalenceApis) {
-        if(reference == null) {
+        if (reference == null) {
             assertNull("Object 1 is null, but Object 2 is non null, hence not equivalent", verifiable);
             return;
         } else {
@@ -56,27 +52,25 @@ public class ReflectionMatchers {
         }
         Class<?> referenceClass = reference.getClass();
         Class<?> object2Class = verifiable.getClass();
-        if(equivalenceApis == null || equivalenceApis.length == 0) {
-            equivalenceApis = buildListOfEquivalenceApisFromReferenceClass(referenceClass);
+        Stream<String> equivalenceApiStream;
+        if (equivalenceApis == null || equivalenceApis.length == 0) {
+            equivalenceApiStream = buildListOfEquivalenceApisFromReferenceClass(referenceClass);
+        } else {
+            equivalenceApiStream = Stream.of(equivalenceApis);
         }
-        for (String  anApi: equivalenceApis) {
+        equivalenceApiStream.forEach(anApi -> {
             Method object1Api = assertExistsAndReturnNoArgsApiWithName(referenceClass, anApi);
             Method object2Api = assertExistsAndReturnNoArgsApiWithName(object2Class, anApi);
             try {
                 assertEquals(invokeMethod(object1Api, reference), invokeMethod(object2Api, verifiable));
-            } catch(AssertionError mismatched) {
+            } catch (AssertionError mismatched) {
                 throw new AssertionError(String.format("Equivalence failed on api: %s() Failure: %s", anApi, mismatched.getMessage()));
             }
-        }
+        });
     }
 
-    private static String[] buildListOfEquivalenceApisFromReferenceClass(Class<?> referenceClass) {
-        return toArray(transform(newArrayList(referenceClass.getDeclaredMethods()), new Function<Method, String>() {
-            @Override
-            public String apply(@Nullable Method input) {
-                return input.getName();
-            }
-        }), String.class);
+    private static Stream<String> buildListOfEquivalenceApisFromReferenceClass(Class<?> referenceClass) {
+        return Stream.of(referenceClass.getDeclaredMethods()).map(Method::getName);
     }
 
     public static Method assertExistsAndReturnNoArgsApiWithName(Class<?> object1Class, String anApi) {

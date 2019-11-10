@@ -7,14 +7,14 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.util.ReflectionUtils.findMethod;
 import static org.springframework.util.ReflectionUtils.invokeMethod;
 
 public class CompositeMatcher<T> extends TypeSafeMatcher<T> {
-    List<TypeSafeMatcher<T>> matchers = newArrayList();
+    List<TypeSafeMatcher<T>> matchers = new ArrayList<>();
 
     protected void add(TypeSafeMatcher<T> aMatcher) {
         matchers.add(aMatcher);
@@ -51,9 +51,7 @@ public class CompositeMatcher<T> extends TypeSafeMatcher<T> {
      * @param descriptor Embed property name into matcher description.
      * @return CompositeMatcher<T>
      */
-    @Deprecated
-    // Use CompositeGenericMatcher instead.
-    protected CompositeMatcher<T> matchProperty(final Class<T> tClass, final String methodOrFieldName, final Matcher propertyMatcher, final String descriptor) {
+    CompositeMatcher<T> matchProperty(final Class<T> tClass, final String methodOrFieldName, final Matcher propertyMatcher, final String descriptor) {
         add(new TypeSafeMatcher<T>() {
             @Override
             public boolean matchesSafely(T t) {
