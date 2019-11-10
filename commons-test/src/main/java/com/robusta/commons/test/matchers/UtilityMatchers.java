@@ -1,12 +1,12 @@
 package com.robusta.commons.test.matchers;
 
-import com.google.common.collect.Iterables;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 public class UtilityMatchers {
     public static <T> Matcher<List<T>> isAnEmptyList(Class<T> tClass) {
@@ -41,7 +41,7 @@ public class UtilityMatchers {
         return new TypeSafeMatcher<Iterable<T>>() {
             @Override
             public boolean matchesSafely(Iterable<T> list) {
-                return list != null && Iterables.size(list) == size;
+                return list != null && StreamSupport.stream(list.spliterator(), false).count() == size;
             }
 
             @Override

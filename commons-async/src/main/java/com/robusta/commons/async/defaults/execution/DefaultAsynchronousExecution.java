@@ -46,7 +46,7 @@ class DefaultAsynchronousExecution<Activity extends AsynchronousActivity<Paramet
             LOGGER.debug("Start complete for job with id: '{}'", jobId);
 
             try {
-                LOGGER.debug("Performing job with id: '{}' using performer", jobId, performer);
+                LOGGER.debug("Performing job with id: '{}' using performer: {}", jobId, performer);
                 Results results = performer.perform(jobOperations.parametersOfJob(jobId));
                 LOGGER.debug("Job execution with id: '{}' was successful", jobId);
                 jobOperations.markComplete(jobId, results);
