@@ -21,7 +21,8 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.TRUE;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
-import static org.springframework.util.ReflectionUtils.*;
+import static org.springframework.util.ReflectionUtils.doWithMethods;
+import static org.springframework.util.ReflectionUtils.invokeMethod;
 
 /**
  * An {@link CellValue} annotation driven spreadsheet builder.
@@ -78,25 +79,17 @@ public abstract class AnnotatedParsingExcelBuilder<Exportable> implements ExcelB
         final List<CellValueMetadata> metadataList = newArrayList();
         final List<String> handledMethods = newArrayList();
         doWithMethods(domainClass,
-                new MethodCallback() {
-                    @Override
-                    public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
-                        logger.debug("Doing with method: '{}'", method);
-                        if (method.isAnnotationPresent(CellValue.class)) {
-                            logger.trace("Method is annotated with CellValue, proceeding to check sanity and collect metadata");
-                            checkSanity(method);
-                            CellValue annotation = method.getAnnotation(CellValue.class);
-                            metadataList.add(newCellValueMetadata(method, annotation));
-                            handledMethods.add(method.getName());
-                        }
+                method -> {
+                    logger.debug("Doing with method: '{}'", method);
+                    if (method.isAnnotationPresent(CellValue.class)) {
+                        logger.trace("Method is annotated with CellValue, proceeding to check sanity and collect metadata");
+                        checkSanity(method);
+                        CellValue annotation = method.getAnnotation(CellValue.class);
+                        metadataList.add(newCellValueMetadata(method, annotation));
+                        handledMethods.add(method.getName());
                     }
                 },
-                new MethodFilter() {
-                    @Override
-                    public boolean matches(Method method) {
-                        return !handledMethods.contains(method.getName());
-                    }
-                }
+                method -> !handledMethods.contains(method.getName())
         );
         Collections.sort(metadataList, OrderComparator.INSTANCE);
         logger.debug("Reading annotations completed on: '{}'. Size of the metadata list: '{}'", domainClass, metadataList.size());
