@@ -157,11 +157,6 @@
                 <version>1.2</version>
             </dependency>
             <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${com.h2database.h2.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>javax.persistence-api</artifactId>
                 <version>${javax.persistence-api.version}</version>
