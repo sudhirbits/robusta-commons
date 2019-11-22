@@ -56,7 +56,7 @@
         <jar-plugin.version>3.2.0</jar-plugin.version>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
-        <commons-configuration.version>1.8</commons-configuration.version>
+        <commons-configuration.version>1.10</commons-configuration.version>
         <archaius.version>0.7.4</archaius.version>
         <c3p0.version>0.9.5.2</c3p0.version>
         <paho.version>1.2.0</paho.version>
