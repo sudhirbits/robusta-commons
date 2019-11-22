@@ -57,7 +57,7 @@
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <commons-configuration.version>1.8</commons-configuration.version>
-        <archaius.version>0.7.4</archaius.version>
+        <archaius.version>0.7.7</archaius.version>
         <c3p0.version>0.9.5.2</c3p0.version>
         <paho.version>1.2.0</paho.version>
         <logback.version>1.2.3</logback.version>
