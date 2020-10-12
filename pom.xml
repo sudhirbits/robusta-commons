@@ -35,7 +35,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <poi.version>4.1.1</poi.version>
         <guava.version>28.1-jre</guava.version>
         <jmock.version>2.5.1</jmock.version>
